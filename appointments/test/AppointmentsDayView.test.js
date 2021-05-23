@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import {
   Appointment,
-  AppointmentsDayView
+  AppointmentsDayView,
 } from '../src/AppointmentsDayView';
 
 describe('Appointment', () => {
@@ -14,7 +14,7 @@ describe('Appointment', () => {
     container = document.createElement('div');
   });
 
-  const render = component =>
+  const render = (component) =>
     ReactDOM.render(component, container);
 
   it('renders the customer first name', () => {
@@ -35,12 +35,24 @@ describe('AppointmentsDayView', () => {
   const appointments = [
     {
       startsAt: today.setHours(12, 0),
-      customer: { firstName: 'Ashley' }
+      customer: {
+        firstName: 'Ashley',
+        lastName: 'Pérez',
+        phoneNumber: '92839213',
+        stylist: 'Sandra',
+        notes: 'Example notes 1',
+      },
     },
     {
       startsAt: today.setHours(13, 0),
-      customer: { firstName: 'Jordan' }
-    }
+      customer: {
+        firstName: 'Jordan',
+        lastName: 'Díaz',
+        phoneNumber: '2914321',
+        stylist: 'Peter',
+        notes: 'Example notes 2',
+      },
+    },
   ];
   let container;
 
@@ -48,7 +60,7 @@ describe('AppointmentsDayView', () => {
     container = document.createElement('div');
   });
 
-  const render = component =>
+  const render = (component) =>
     ReactDOM.render(component, container);
 
   it('renders a div with the right id', () => {
@@ -103,4 +115,28 @@ describe('AppointmentsDayView', () => {
     ReactTestUtils.Simulate.click(button);
     expect(container.textContent).toMatch('Jordan');
   });
+
+  it('renders a table for the appointment selected', () => {
+    render(<AppointmentsDayView appointments={appointments} />);
+    const table = container.querySelector('table');
+
+    expect(table).not.toBeNull();
+  });
+
+  it('renders the data of the appointments customer', () => {
+    render(<AppointmentsDayView appointments={appointments} />);
+    const table = container.querySelector('table');
+
+    expect(table.textContent).toMatch('Pérez');
+    expect(table.textContent).toMatch('92839213');
+    expect(table.textContent).toMatch('Sandra');
+    expect(table.textContent).toMatch('Example notes 1');
+  });
+    it('renders a title with the Appointment that is being viewed (time)', () => {
+      render(<AppointmentsDayView appointments={appointments} />);
+      const heading = container.querySelector('h1');
+      
+      expect(heading).not.toBeNull();
+      expect(heading.textContent).toMatch('Today\'s appointment at 12:00');
+    });
 });

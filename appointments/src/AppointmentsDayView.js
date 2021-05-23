@@ -1,18 +1,40 @@
 import React, { useState } from 'react';
 
-const appointmentTimeOfDay = startsAt => {
+const appointmentTimeOfDay = (startsAt) => {
   const [h, m] = new Date(startsAt).toTimeString().split(':');
   return `${h}:${m}`;
 };
 
-export const Appointment = ({ customer }) => (
-  <div>{customer.firstName}</div>
+export const Appointment = ({ customer, startsAt }) => (
+  <section>
+    <h1>{`Today's appointment at ${appointmentTimeOfDay(
+      startsAt
+    )}`}</h1>
+    <table>
+      <tbody>
+        <tr>
+          <td>{customer.firstName}</td>
+        </tr>
+        <tr>
+          <td>{customer.lastName}</td>
+        </tr>
+        <tr>
+          <td>{customer.phoneNumber}</td>
+        </tr>
+        <tr>
+          <td>{customer.stylist}</td>
+        </tr>
+        <tr>
+          <td>{customer.notes}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 );
 
 export const AppointmentsDayView = ({ appointments }) => {
-  const [selectedAppointment, setSelectedAppointment] = useState(
-    0
-  );
+  const [selectedAppointment, setSelectedAppointment] =
+    useState(0);
 
   return (
     <div id="appointmentsDayView">
